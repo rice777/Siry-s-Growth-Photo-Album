@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>粉粉的成长相册 🌸</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&family=ZCOOL+XiaoWei&display=swap');
+
+  :root {
+    --pink-light: #FFF0F5;
+    --pink: #FFB6C1;
+    --pink-dark: #FF69B4;
+    --cream: #FFF8F0;
+    --brown: #8B6F5E;
+    --brown-light: #A89080;
+    --white: #FFFFFF;
+    --shadow: rgba(255, 105, 180, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #FFF0F5 0%, #FFF8F0 50%, #FFF0F5 100%);
+    color: var(--brown);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* 顶部背景装饰 */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 300px;
+    background: linear-gradient(135deg, rgba(255,182,193,0.3), rgba(255,105,180,0.1));
+    z-index: -1;
+    border-radius: 0 0 50% 50%;
+  }
+
+  /* 飘落的花瓣动画 */
+  .petals {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .petal {
+    position: absolute;
+    top: -20px;
+    width: 15px;
+    height: 15px;
+    background: var(--pink);
+    border-radius: 50% 0 50% 50%;
+    opacity: 0.3;
+    animation: fall linear infinite;
+  }
+
+  .petal:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; width: 12px; height: 12px; }
+  .petal:nth-child(2) { left: 25%; animation-duration: 15s; animation-delay: 2s; width: 10px; height: 10px; }
+  .petal:nth-child(3) { left: 40%; animation-duration: 10s; animation-delay: 4s; }
+  .petal:nth-child(4) { left: 55%; animation-duration: 14s; animation-delay: 1s; width: 8px; height: 8px; }
+  .petal:nth-child(5) { left: 70%; animation-duration: 11s; animation-delay: 3s; }
+  .petal:nth-child(6) { left: 85%; animation-duration: 13s; animation-delay: 5s; width: 14px; height: 14px; }
+  .petal:nth-child(7) { left: 5%; animation-duration: 16s; animation-delay: 6s; }
+  .petal:nth-child(8) { left: 95%; animation-duration: 9s; animation-delay: 2.5s; width: 11px; height: 11px; }
+
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 0.3; }
+    50% { opacity: 0.2; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* 主容器 */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 封面 */
+  .cover {
+    text-align: center;
+    padding: 60px 20px 40px;
+    margin-bottom: 30px;
+  }
+
+  .cover-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    box-shadow: 0 8px 30px var(--shadow);
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .cover h1 {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 2.5em;
+    color: var(--pink-dark);
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px var(--shadow);
+  }
+
+  .cover .subtitle {
+    font-size: 1.1em;
+    color: var(--brown-light);
+    margin-bottom: 8px;
+  }
+
+  .cover .dates {
+    font-size: 0.95em;
+    color: var(--brown-light);
+    opacity: 0.8;
+  }
+
+  .cover .decorative-line {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--pink-dark), transparent);
+    margin: 15px auto;
+  }
+
+  /* 时间轴导航 */
+  .timeline-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+  }
+
+  .timeline-nav button {
+    padding: 8px 18px;
+    border: 2px solid var(--pink);
+    background: white;
+    border-radius: 25px;
+    color: var(--brown);
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .timeline-nav button:hover,
+  .timeline-nav button.active {
+    background: linear-gradient(135deg, var(--pink-dark), var(--pink));
+    color: white;
+    border-color: var(--pink-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+
+  /* 章节 */
+  .chapter {
+    margin-bottom: 40px;
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, rgba(255,182,193,0.3), rgba(255,248,240,0.8));
+    border-radius: 15px;
+    border-left: 4px solid var(--pink-dark);
+  }
+
+  .chapter-icon {
+    font-size: 2em;
+    margin-right: 15px;
+  }
+
+  .chapter-title {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 1.6em;
+    color: var(--pink-dark);
+  }
+
+  .chapter-desc {
+    font-size: 0.85em;
+    color: var(--brown-light);
+    margin-top: 2px;
+  }
+
+  /* 照片卡片网格 */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 0 5px;
+  }
+
+  .photo-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .photo-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 30px var(--shadow);
+  }
+
+  .photo-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .photo-card:hover img {
+    transform: scale(1.05);
+  }
+
+  .photo-card .photo-info {
+    padding: 12px;
+    text-align: center;
+  }
+
+  .photo-card .photo-caption {
+    font-size: 0.9em;
+    color: var(--brown);
+    line-height: 1.4;
+  }
+
+  .photo-card .photo-date {
+    font-size: 0.75em;
+    color: var(--brown-light);
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+
+  /* 特殊卡片 - 大卡片 */
+  .photo-card.featured {
+    grid-column: span 2;
+  }
+
+  .photo-card.featured img {
+    height: 280px;
+  }
+
+  /* 页脚 */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--brown-light);
+    font-size: 0.9em;
+  }
+
+  .footer .heart {
+    color: var(--pink-dark);
+    font-size: 1.5em;
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+
+  /* 灯箱 */
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .lightbox.active {
+    display: flex;
+  }
+
+  .lightbox img {
+    max-width: 95%;
+    max-height: 80vh;
+    border-radius: 10px;
+    box-shadow: 0 0 40px rgba(255,105,180,0.3);
+  }
+
+  .lightbox .caption {
+    color: white;
+    margin-top: 15px;
+    font-size: 1.1em;
+    text-align: center;
+  }
+
+  .lightbox .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 2em;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    transition: background 0.3s;
+  }
+
+  .lightbox .close-btn:hover {
+    background: rgba(255,105,180,0.5);
+  }
+
+  /* 回到顶部 */
+  .back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink-dark), var(--pink));
+    color: white;
+    border: none;
+    font-size: 1.3em;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--shadow);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+    z-index: 50;
+  }
+
+  .back-to-top:hover {
+    transform: scale(1.1);
+  }
+
+  /* 响应式 */
+  @media (max-width: 600px) {
+    .container { padding: 10px; }
+    .cover h1 { font-size: 2em; }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .photo-card.featured { grid-column: span 2; }
+    .photo-card img { height: 160px; }
+    .photo-card.featured img { height: 200px; }
+    .timeline-nav { gap: 6px; padding: 10px; }
+    .timeline-nav button { padding: 6px 12px; font-size: 0.85em; }
+  }
+
+  /* 打印样式 */
+  @media print {
+    body { background: white; }
+    body::before { display: none; }
+    .petals { display: none; }
+    .timeline-nav { display: none; }
+    .back-to-top { display: none; }
+    .photo-card { break-inside: avoid; box-shadow: none; border: 1px solid #eee; }
+    .photo-card:hover { transform: none; box-shadow: none; }
+    .chapter { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 飘落花瓣 -->
+<div class="petals">
+  <div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div>
+</div>
+
+<div class="container">
+
+  <!-- 封面 -->
+  <div class="cover">
+    <div class="cover-avatar">👶</div>
+    <h1>粉粉的成长相册</h1>
+    <div class="decorative-line"></div>
+    <p class="subtitle">🌸 戴书雅（小名：粉粉） 🌸</p>
+    <p class="dates">2020年7月17日 降临这个世界</p>
+    <p class="dates" style="margin-top:5px">从襁褓中的小婴儿，到活泼可爱的小女孩</p>
+    <p class="dates">每一刻，都是最珍贵的回忆 💕</p>
+  </div>
+
+  <!-- 时间轴导航 -->
+  <div class="timeline-nav" id="timelineNav">
+    <button class="active" onclick="showChapter('all')">🌟 全部</button>
+    <button onclick="showChapter('0-1岁')">🍼 0-1岁</button>
+    <button onclick="showChapter('1-2岁')">🎈 1-2岁</button>
+    <button onclick="showChapter('2-3岁')">🌈 2-3岁</button>
+    <button onclick="showChapter('3-4岁')">🎨 3-4岁</button>
+    <button onclick="showChapter('4-5岁')">🌺 4-5岁</button>
+  </div>
+
+  <!-- ==================== 0-1岁 ==================== -->
+  <div class="chapter" id="ch-0-1岁">
+    <div class="chapter-header">
+      <span class="chapter-icon">🍼</span>
+      <div>
+        <div class="chapter-title">0-1岁 · 初次遇见你</div>
+        <div class="chapter-desc">2020.07 - 2021.07 · 你是上帝赐予我们最珍贵的礼物</div>
+      </div>
+    </div>
+    <div class="photo-grid" id="grid-0-1岁"></div>
+  </div>
+
+  <!-- ==================== 1-2岁 ==================== -->
+  <div class="chapter" id="ch-1-2岁">
+    <div class="chapter-header">
+      <span class="chapter-icon">🎈</span>
+      <div>
+        <div class="chapter-title">1-2岁 · 蹒跚学步中</div>
+        <div class="chapter-desc">2021.07 - 2022.07 · 迈出的每一步都是成长的惊喜</div>
+      </div>
+    </div>
+    <div class="photo-grid" id="grid-1-2岁"></div>
+  </div>
+
+  <!-- ==================== 2-3岁 ==================== -->
+  <div class="chapter" id="ch-2-3岁">
+    <div class="chapter-header">
+      <span class="chapter-icon">🌈</span>
+      <div>
+        <div class="chapter-title">2-3岁 · 探索世界啦</div>
+        <div class="chapter-desc">2022.07 - 2023.07 · 小小的你，大大的好奇心</div>
+      </div>
+    </div>
+    <div class="photo-grid" id="grid-2-3岁"></div>
+  </div>
+
+  <!-- ==================== 3-4岁 ==================== -->
+  <div class="chapter" id="ch-3-4岁">
+    <div class="chapter-header">
+      <span class="chapter-icon">🎨</span>
+      <div>
+        <div class="chapter-title">3-4岁 · 快乐的小精灵</div>
+        <div class="chapter-desc">2023.07 - 2024.07 · 你的笑容是最好的阳光</div>
+      </div>
+    </div>
+    <div class="photo-grid" id="grid-3-4岁"></div>
+  </div>
+
+  <!-- ==================== 4-5岁 ==================== -->
+  <div class="chapter" id="ch-4-5岁">
+    <div class="chapter-header">
+      <span class="chapter-icon">🌺</span>
+      <div>
+        <div class="chapter-title">4-5岁 · 勇敢的小公主</div>
+        <div class="chapter-desc">2024.07 - 2025.07 · 每一天都在绽放新的光彩</div>
+      </div>
+    </div>
+    <div class="photo-grid" id="grid-4-5岁"></div>
+  </div>
+
+  <!-- 页脚 -->
+  <div class="footer">
+    <div class="heart">💗</div>
+    <p style="margin-top:10px">粉粉，愿你永远健康、快乐地成长</p>
+    <p>爸爸和妈妈永远爱你 · 2020 - ∞</p>
+    <p style="margin-top:10px; font-size:0.8em; opacity:0.5">📸 成长相册 · 持续更新中</p>
+  </div>
+
+</div>
+
+<!-- 灯箱 -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="close-btn" onclick="closeLightbox()">&times;</div>
+  <img id="lightbox-img" src="" alt="">
+  <div class="caption" id="lightbox-caption"></div>
+</div>
+
+<!-- 回到顶部 -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ==================== 照片数据加载 ====================
+// 所有照片数据在 data.json 中，修改文字、增删照片只需改 data.json 即可
+// data.json 格式：
+// {
+//   "0-1岁": [
+//     { "file": "照片文件名.jpg", "caption": "文字描述", "date": "2020.07.19", "featured": true },
+//     ...
+//   ],
+//   ...
+// }
+// featured: true = 大卡片显示（每个章节最多1-2张）
+
+const PHOTOS_PATH = './photos/';
+
+let chapterData = {};
+
+fetch('data.json')
+  .then(r => r.json())
+  .then(data => {
+    chapterData = data;
+    renderPhotos();
+  })
+  .catch(() => {
+    // 如果加载失败，显示提示
+    document.querySelectorAll('.photo-grid').forEach(g => {
+      g.innerHTML = '<p style="color:#aaa;padding:20px;">加载数据失败，请确保 data.json 文件存在</p>';
+    });
+  });
+
+// ==================== 渲染照片 ====================
+function renderPhotos() {
+  for (const [chapter, photos] of Object.entries(chapterData)) {
+    const grid = document.getElementById(`grid-${chapter}`);
+    if (!grid) continue;
+    
+    photos.forEach((photo, i) => {
+      const card = document.createElement('div');
+      card.className = `photo-card${photo.featured ? ' featured' : ''}`;
+      
+      // 构建图片路径
+      const imgSrc = `${PHOTOS_PATH}${chapter}/${photo.file}`;
+      
+      card.innerHTML = `
+        <img src="${imgSrc}" alt="${photo.caption}" loading="lazy" 
+             onerror="this.style.display='none'; this.parentElement.querySelector('.photo-info').innerHTML='<div style=\\'padding:40px 10px; color:#aaa;\\'>📷 照片暂未找到<br><small>路径: ${photo.file}</small></div>';">
+        <div class="photo-info">
+          <div class="photo-caption">${photo.caption}</div>
+          <div class="photo-date">${photo.date}</div>
+        </div>
+      `;
+      
+      card.addEventListener('click', () => openLightbox(imgSrc, photo.caption, photo.date));
+      grid.appendChild(card);
+    });
+  }
+}
+
+// ==================== 灯箱 ====================
+function openLightbox(src, caption, date) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-caption').textContent = `${caption} · ${date}`;
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('close-btn')) return;
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// ==================== 章节过滤 ====================
+function showChapter(chapterId) {
+  const chapters = document.querySelectorAll('.chapter');
+  const buttons = document.querySelectorAll('.timeline-nav button');
+  
+  buttons.forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  if (chapterId === 'all') {
+    chapters.forEach(ch => { ch.style.display = ''; ch.style.animation = 'fadeInUp 0.6s ease-out'; });
+  } else {
+    chapters.forEach(ch => {
+      if (ch.id === `ch-${chapterId}`) {
+        ch.style.display = '';
+        ch.style.animation = 'fadeInUp 0.6s ease-out';
+      } else {
+        ch.style.display = 'none';
+      }
+    });
+  }
+  
+  // 滚动到对应章节
+  if (chapterId !== 'all') {
+    const target = document.getElementById(`ch-${chapterId}`);
+    if (target) {
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }
+}
+
+// ==================== 回到顶部按钮 ====================
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('backToTop');
+  btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+});
+
+// ==================== 初始化 ====================
+renderPhotos();
+</script>
+
+</body>
+</html>
