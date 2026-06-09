@@ -421,16 +421,16 @@
   <!-- 时间轴导航 -->
   <div class="timeline-nav" id="timelineNav">
     <button class="active" onclick="showChapter('all')">🌟 全部</button>
-    <button onclick="showChapter('0-1age')">🍼 0-1岁</button>
-    <button onclick="showChapter('1-2age')">🎈 1-2岁</button>
-    <button onclick="showChapter('2-3age')">🌈 2-3岁</button>
-    <button onclick="showChapter('3-4age')">🎨 3-4岁</button>
-    <button onclick="showChapter('4-5age')">🌺 4-5岁</button>
-    <button onclick="showChapter('5-6age')">🎓 5-6岁</button>
+    <button onclick="showChapter('0-1岁')">🍼 0-1岁</button>
+    <button onclick="showChapter('1-2岁')">🎈 1-2岁</button>
+    <button onclick="showChapter('2-3岁')">🌈 2-3岁</button>
+    <button onclick="showChapter('3-4岁')">🎨 3-4岁</button>
+    <button onclick="showChapter('4-5岁')">🌺 4-5岁</button>
+    <button onclick="showChapter('5-6岁')">🎓 5-6岁</button>
   </div>
 
   <!-- ==================== 0-1岁 ==================== -->
-  <div class="chapter" id="ch-0-1age">
+  <div class="chapter" id="ch-0-1岁">
     <div class="chapter-header">
       <span class="chapter-icon">🍼</span>
       <div>
@@ -438,11 +438,11 @@
         <div class="chapter-desc">2020.07 - 2021.07 · 你是上帝赐予我们最珍贵的礼物</div>
       </div>
     </div>
-    <div class="photo-grid" id="grid-0-1age"></div>
+    <div class="photo-grid" id="grid-0-1岁"></div>
   </div>
 
   <!-- ==================== 1-2岁 ==================== -->
-  <div class="chapter" id="ch-1-2age">
+  <div class="chapter" id="ch-1-2岁">
     <div class="chapter-header">
       <span class="chapter-icon">🎈</span>
       <div>
@@ -450,11 +450,11 @@
         <div class="chapter-desc">2021.07 - 2022.07 · 迈出的每一步都是成长的惊喜</div>
       </div>
     </div>
-    <div class="photo-grid" id="grid-1-2age"></div>
+    <div class="photo-grid" id="grid-1-2岁"></div>
   </div>
 
   <!-- ==================== 2-3岁 ==================== -->
-  <div class="chapter" id="ch-2-3age">
+  <div class="chapter" id="ch-2-3岁">
     <div class="chapter-header">
       <span class="chapter-icon">🌈</span>
       <div>
@@ -462,11 +462,11 @@
         <div class="chapter-desc">2022.07 - 2023.07 · 小小的你，大大的好奇心</div>
       </div>
     </div>
-    <div class="photo-grid" id="grid-2-3age"></div>
+    <div class="photo-grid" id="grid-2-3岁"></div>
   </div>
 
   <!-- ==================== 3-4岁 ==================== -->
-  <div class="chapter" id="ch-3-4age">
+  <div class="chapter" id="ch-3-4岁">
     <div class="chapter-header">
       <span class="chapter-icon">🎨</span>
       <div>
@@ -474,11 +474,11 @@
         <div class="chapter-desc">2023.07 - 2024.07 · 你的笑容是最好的阳光</div>
       </div>
     </div>
-    <div class="photo-grid" id="grid-3-4age"></div>
+    <div class="photo-grid" id="grid-3-4岁"></div>
   </div>
 
   <!-- ==================== 4-5岁 ==================== -->
-  <div class="chapter" id="ch-4-5age">
+  <div class="chapter" id="ch-4-5岁">
     <div class="chapter-header">
       <span class="chapter-icon">🌺</span>
       <div>
@@ -486,11 +486,11 @@
         <div class="chapter-desc">2024.07 - 2025.07 · 每一天都在绽放新的光彩</div>
       </div>
     </div>
-    <div class="photo-grid" id="grid-4-5age"></div>
+    <div class="photo-grid" id="grid-4-5岁"></div>
   </div>
 
   <!-- ==================== 5-6岁 ==================== -->
-  <div class="chapter" id="ch-5-6age">
+  <div class="chapter" id="ch-5-6岁">
     <div class="chapter-header">
       <span class="chapter-icon">🎓</span>
       <div>
@@ -498,7 +498,7 @@
         <div class="chapter-desc">2025.07 - 2026.07 · 你的世界越来越大，好奇心也越来越多</div>
       </div>
     </div>
-    <div class="photo-grid" id="grid-5-6age"></div>
+    <div class="photo-grid" id="grid-5-6岁"></div>
   </div>
 
   <!-- 页脚 -->
@@ -534,17 +534,7 @@
 // }
 // featured: true = 大卡片显示（每个章节最多1-2张）
 
-const PHOTOS_PATH = 'https://cdn.jsdelivr.net/gh/rice777/Siry-s-Growth-Photo-Album@master/photos/';
-
-// Chapter name mapping: data.json keys (English) -> DOM element IDs (Chinese)
-const CHAPTER_MAP = {
-  '0-1age': '0-1岁',
-  '1-2age': '1-2岁',
-  '2-3age': '2-3岁',
-  '3-4age': '3-4岁',
-  '4-5age': '4-5岁',
-  '5-6age': '5-6岁',
-};
+const PHOTOS_PATH = './photos/';
 
 let chapterData = {};
 
@@ -564,15 +554,14 @@ fetch('data.json')
 // ==================== 渲染照片 ====================
 function renderPhotos() {
   for (const [chapter, photos] of Object.entries(chapterData)) {
-    const chapterName = CHAPTER_MAP[chapter] || chapter;
-    const grid = document.getElementById(`grid-${chapterName}`);
+    const grid = document.getElementById(`grid-${chapter}`);
     if (!grid) continue;
     
     photos.forEach((photo, i) => {
       const card = document.createElement('div');
       card.className = `photo-card${photo.featured ? ' featured' : ''}`;
       
-      // Build image path with CDN
+      // Build image path
       const imgSrc = `${PHOTOS_PATH}${chapter}/${photo.file}`;
       
       card.innerHTML = `
