@@ -534,7 +534,23 @@
 // }
 // featured: true = 大卡片显示（每个章节最多1-2张）
 
-const PHOTOS_PATH = 'https://cdn.jsdelivr.net/gh/rice777/Siry-s-Growth-Photo-Album@master/photos/';
+// ==================== CDN 配置 ====================
+// 三轨加载策略: 列表页加载400px缩略图(7MB), 灯箱加载原图(162MB)
+// 优先级: jsDelivr CDN → 本地compressed目录(实验分支)
+const CDN_BASE = 'https://cdn.jsdelivr.net/gh/rice777/Siry-s-Growth-Photo-Album@exp-cdn-study/compressed/';
+const USE_COMPRESSED = true; // 是否使用压缩图片
+
+function getPhotoUrl(chapter, filename) {
+  // 生成无扩展名的文件名
+  const baseName = filename.replace(/\.(jpg|jpeg|png|webp)$/i, '');
+  
+  // 三轨URL:
+  const thumb400 = `${CDN_BASE}${encodeURIComponent(chapter)}/thumb400/orig_${baseName}.webp`;
+  const thumb1200 = `${CDN_BASE}${encodeURIComponent(chapter)}/thumb1200/orig_${baseName}.webp`;
+  const orig = `${CDN_BASE}${encodeURIComponent(chapter)}/orig_${baseName}.webp`;
+  
+  return { thumb400, thumb1200, orig };
+}
 
 let chapterData = {};
 
@@ -561,8 +577,11 @@ function renderPhotos() {
       const card = document.createElement('div');
       card.className = `photo-card${photo.featured ? ' featured' : ''}`;
       
-      // Build image path with URL encoding for jsDelivr CDN
-      const imgSrc = `${PHOTOS_PATH}${encodeURIComponent(chapter)}/${photo.file}`;
+      // 获取三轨URL
+      const urls = getPhotoUrl(chapter, photo.file);
+      
+      // 列表页使用400px缩略图，点击后加载原图到灯箱
+      const imgSrc = urls.thumb400;
       
       card.innerHTML = `
         <img src="${imgSrc}" alt="${photo.caption}" loading="lazy"
@@ -573,16 +592,27 @@ function renderPhotos() {
         </div>
       `;
       
-      card.addEventListener('click', () => openLightbox(imgSrc, photo.caption, photo.date));
+      // 存储完整URL到data属性，点击时加载原图
+      card.dataset.origUrl = urls.orig;
+      card.dataset.thumbUrl = urls.thumb1200;
+      card.addEventListener('click', () => openLightbox(urls.orig, urls.thumb1200, photo.caption, photo.date));
       grid.appendChild(card);
     });
   }
 }
 
 // ==================== 灯箱 ====================
-function openLightbox(src, caption, date) {
+function openLightbox(origUrl, thumbUrl, caption, date) {
   const lb = document.getElementById('lightbox');
-  document.getElementById('lightbox-img').src = src;
+  const img = document.getElementById('lightbox-img');
+  
+  // 先显示缩略图，再渐变到原图
+  img.src = thumbUrl;
+  img.onload = function() {
+    // 缩略图加载完成后，切换到原图
+    this.src = origUrl;
+  };
+  
   document.getElementById('lightbox-caption').textContent = `${caption} · ${date}`;
   lb.classList.add('active');
   document.body.style.overflow = 'hidden';
