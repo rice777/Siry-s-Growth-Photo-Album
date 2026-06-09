@@ -565,7 +565,7 @@ function renderPhotos() {
       card.className = `photo-card${photo.featured ? ' featured' : ''}`;
       
       // 相对路径: ./photos/{chapter}/{filename}
-      const imgSrc = `./photos/${chapter}/${photo.file}`;
+      const imgSrc = `https://fenfen-album-1441678113.cos.ap-guangzhou.myqcloud.com/${chapter}/${photo.file}`;
       
       card.innerHTML = `
         <img src="${imgSrc}" alt="${photo.caption}" loading="lazy"
