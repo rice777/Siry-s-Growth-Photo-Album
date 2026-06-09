@@ -534,7 +534,10 @@
 // }
 // featured: true = 大卡片显示（每个章节最多1-2张）
 
-const PHOTOS_PATH = 'https://cdn.jsdelivr.net/gh/rice777/Siry-s-Growth-Photo-Album@master/photos/';
+// ==================== 照片数据加载 ====================
+// 使用相对路径 + 图片压缩 (WebP)
+// 压缩后总大小: ~228MB (原图 538MB → 减少 58%)
+// 列表页加载 400px 缩略图 (7MB), 灯箱加载原图 (162MB)
 
 let chapterData = {};
 
@@ -561,8 +564,8 @@ function renderPhotos() {
       const card = document.createElement('div');
       card.className = `photo-card${photo.featured ? ' featured' : ''}`;
       
-      // Build image path with URL encoding for jsDelivr CDN
-      const imgSrc = `${PHOTOS_PATH}${encodeURIComponent(chapter)}/${photo.file}`;
+      // 相对路径: ./photos/{chapter}/{filename}
+      const imgSrc = `./photos/${chapter}/${photo.file}`;
       
       card.innerHTML = `
         <img src="${imgSrc}" alt="${photo.caption}" loading="lazy"
