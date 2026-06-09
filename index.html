@@ -534,7 +534,7 @@
 // }
 // featured: true = 大卡片显示（每个章节最多1-2张）
 
-const PHOTOS_PATH = 'https://cdn.jsdelivr.net/gh/rice777/Siry-s-Growth-Photo-Album@master/photos/';
+const PHOTOS_PATH = './photos/';
 
 let chapterData = {};
 
@@ -561,8 +561,8 @@ function renderPhotos() {
       const card = document.createElement('div');
       card.className = `photo-card${photo.featured ? ' featured' : ''}`;
       
-      // Build image path with URL encoding for Chinese folder names
-      const imgSrc = `${PHOTOS_PATH}${encodeURI(chapter)}/${photo.file}`;
+      // Build image path
+      const imgSrc = `${PHOTOS_PATH}${chapter}/${photo.file}`;
       
       card.innerHTML = `
         <img src="${imgSrc}" alt="${photo.caption}" loading="lazy"
